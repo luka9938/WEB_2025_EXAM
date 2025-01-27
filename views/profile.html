@@ -1,0 +1,14 @@
+%include("_header")
+
+<main>
+    <div class="w-full pb-16 px-4">
+        <div id="items" class="grid grid-cols-1 lg:grid-cols-2 gap-4 pb-10">
+            % for item in items:
+                %include("_item")
+            % end
+        </div>
+        %include("__btn_more", page_number=2)
+    </div>
+</main>
+
+%include("_footer")
