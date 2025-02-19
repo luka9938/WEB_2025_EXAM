@@ -1,45 +1,88 @@
-import smtplib, ssl
+import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from bottle import request
 
-sender_email = "YOUR CREATED GMAIL ACCOUNT"
-receiver_email = "SEND TO THIS EMAIL ACCOUNT"
-password = "THE SECRET CODE YOU COPIED FROM GOOGLE ACCOUNT"
+##############################
+def send_reset_email(email, key):
+    from_email = 'joeybidenisbased@gmail.com'
+    from_password = 'tdvi euik qgsa bzdf'
 
-message = MIMEMultipart("alternative")
-message["Subject"] = "multipart test"
-message["From"] = sender_email
-message["To"] = receiver_email
+    domain = request.urlparts.scheme + "://" + request.urlparts.netloc
+    reset_link = f"{domain}/reset-password/{key}"
+    msg = MIMEText(f"Click the link to reset your password: {reset_link}")
+    msg["Subject"] = "Password Reset Request"
+    msg["From"] = from_email
+    msg["To"] = email
 
-# Create the plain-text and HTML version of your message
-text = """\
-Hi,
-How are you?
-www.your_website_here.com"""
-html = """\
-<html>
-  <body>
-    <p>Hi,<br>
-       How are you?<br>
-       <a href="https://www.your_website_here.com">YOUR WEBSITE HERE</a>
-    </p>
-  </body>
-</html>
-"""
+    server = smtplib.SMTP('smtp.gmail.com:587')
+    server.ehlo('Gmail')
+    server.starttls()
+    server.login(from_email, from_password)
+    server.sendmail(msg["From"], [msg["To"]], msg.as_string())
 
-# Turn these into plain/html MIMEText objects
-part1 = MIMEText(text, "plain")
-part2 = MIMEText(html, "html")
+##############################
+def send_block_email(email):
+    from_email = 'joeybidenisbased@gmail.com'
+    from_password = 'tdvi euik qgsa bzdf'
 
-# Add HTML/plain-text parts to MIMEMultipart message
-# The email client will try to render the last part first
-message.attach(part1)
-message.attach(part2)
+    msg = MIMEText(f"You are deleted bro")
+    msg["Subject"] = "Account Blocked"
+    msg["From"] = from_email
+    msg["To"] = email
 
-# Create secure connection with server and send email
-context = ssl.create_default_context()
-with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
-    server.login(sender_email, password)
-    server.sendmail(
-        sender_email, receiver_email, message.as_string()
-    )
+    server = smtplib.SMTP('smtp.gmail.com:587')
+    server.ehlo('Gmail')
+    server.starttls()
+    server.login(from_email, from_password)
+    server.sendmail(msg["From"], [msg["To"]], msg.as_string())
+
+
+##############################
+def send_unblock_email(email):
+    from_email = 'joeybidenisbased@gmail.com'
+    from_password = 'tdvi euik qgsa bzdf'
+
+    msg = MIMEText(f"You are no longer deleted bro")
+    msg["Subject"] = "account un-blocked"
+    msg["From"] = from_email
+    msg["To"] = email
+
+    server = smtplib.SMTP('smtp.gmail.com:587')
+    server.ehlo('Gmail')
+    server.starttls()
+    server.login(from_email, from_password)
+    server.sendmail(msg["From"], [msg["To"]], msg.as_string())
+##############################
+def send_block_property_email(email):
+    from_email = 'joeybidenisbased@gmail.com'
+    from_password = 'tdvi euik qgsa bzdf'
+
+    msg = MIMEText(f"your property has been blocked")
+    msg["Subject"] = "Proerty blocked"
+    msg["From"] = from_email
+    msg["To"] = email
+
+    server = smtplib.SMTP('smtp.gmail.com:587')
+    server.ehlo('Gmail')
+    server.starttls()
+    server.login(from_email, from_password)
+    server.sendmail(msg["From"], [msg["To"]], msg.as_string())
+
+##############################
+def send_unblock_property_email(email):
+    from_email = 'joeybidenisbased@gmail.com'
+    from_password = 'tdvi euik qgsa bzdf'
+
+    msg = MIMEText(f"your property is no longer blocked")
+    msg["Subject"] = "Property un-blocked"
+    msg["From"] = from_email
+    msg["To"] = email
+
+    server = smtplib.SMTP('smtp.gmail.com:587')
+    server.ehlo('Gmail')
+    server.starttls()
+    server.login(from_email, from_password)
+    server.sendmail(msg["From"], [msg["To"]], msg.as_string())
+
+##############################
