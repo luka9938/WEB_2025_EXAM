@@ -1,14 +1,61 @@
-%include("_header")
+% include("_header")
 
-<main>
-    <div class="w-full pb-16 px-4">
-        <div id="items" class="grid grid-cols-1 lg:grid-cols-2 gap-4 pb-10">
-            % for item in items:
-                %include("_item")
-            % end
-        </div>
-        %include("__btn_more", page_number=2)
-    </div>
+<main id="profile" class="mt-16 p-4">
+  <h1>Edit Your Profile</h1>
+
+  % if success_message:
+  <div class="alert alert-success">{{ success_message }}</div>
+  % end
+
+  <form
+    action="/update_profile"
+    method="post"
+    class="flex flex-col gap-2 w-full mx-4 md:w-1/2"
+  >
+    <input
+      name="username"
+      class="w-full border"
+      type="text"
+      placeholder="Name"
+      value="{{user['username']}}"
+    />
+    <input
+      name="user_email"
+      class="w-full border"
+      type="email"
+      placeholder="Email"
+      value="{{user['user_email']}}"
+    />
+    <input
+      name="user_password"
+      class="w-full border"
+      type="password"
+      placeholder="Password"
+      required
+    />
+    <button type="submit">Save Changes</button>
+  </form>
+
+  <h1 class="mt-8">To delete your account enter your email and password</h1>
+  <form
+    action="/verification_email_delete"
+    method="post"
+    class="flex flex-col gap-2 w-full mx-4 md:w-1/2"
+  >
+    <input
+      name="user_email"
+      class="w-full border"
+      type="text"
+      placeholder="Email"
+    />
+    <input
+      name="user_password"
+      class="w-full border"
+      type="password"
+      placeholder="Password"
+    />
+    <button type="submit">Confirm deletion of account</button>
+  </form>
 </main>
 
-%include("_footer")
+% include("_footer")

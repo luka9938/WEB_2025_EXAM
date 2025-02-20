@@ -1,5 +1,5 @@
 import re
-from bottle import request, response
+from bottle import request
 import x
 
 USER_ID_REGEX = "^[a-f0-9]{32}$"
@@ -8,10 +8,11 @@ PASSWORD_REGEX = "^.{6,50}$"
 USER_PASSWORD_REGEX = "^.{6,50}$"
 
 def validate_user_logged():
-    user = request.get_cookie("user", secret=x.COOKIE_SECRET)
+    user = request.get_cookie("user_session_id")
     if user is None:
-        raise Exception("User must log in", 400)
-    return user
+        return True
+    else:
+        return False
 
 def validate_email():
     email = request.forms.get("user_email", "").strip()

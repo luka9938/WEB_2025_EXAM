@@ -8,6 +8,7 @@ import x
 @get("/login")
 def _():
     x.no_cache()
+    
     return template("login.html")
 
 @post("/login")

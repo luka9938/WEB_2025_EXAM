@@ -1,7 +1,8 @@
 from bottle import get, template
-import x
+import utils.validation as utils_valid
 import utils.db as db_utils
 import credentials
+import x
 
 @get("/")
 def _():
@@ -12,7 +13,7 @@ def _():
         db.close()
         is_logged = False
         try:
-            is_logged = x.validate_user
+            is_logged = utils_valid.validate_user
         except:
             pass
 
