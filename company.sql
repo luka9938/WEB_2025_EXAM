@@ -14,6 +14,7 @@ CREATE TABLE users(
     user_updated_at         INTEGER,
     user_is_verified        INTEGER,
     user_is_blocked         INTEGER,
+    user_is_deleted         INTEGER,
     PRIMARY KEY(user_pk)
 ) WITHOUT ROWID;
 
@@ -28,6 +29,7 @@ INSERT INTO users VALUES(
     1712674758,
     0,
     1,
+    0,
     0
 );
 
@@ -58,6 +60,10 @@ INSERT INTO items VALUES
 ("5dbce622fa2b4f22a6f6957d07ff4958", "The National Museum of Denmark", "5dbce622fa2b4f22a6f6957d07ff4958.webp", 55.6772, 12.5784, 5, 2100, 8, 0),
 ("5dbce622fa2b4f22a6f6957d07ff4959", "Church of Our Saviour", "5dbce622fa2b4f22a6f6957d07ff4959.webp", 55.6732, 12.5986, 4.3, 985, 9, 0),
 ("5dbce622fa2b4f22a6f6957d07ff4910", "Round Tower", "5dbce622fa2b4f22a6f6957d07ff4910.webp",  55.6813, 12.5759, 4.8, 1200, 10, 0);
+
+
+ALTER TABLE items ADD COLUMN item_blocked BOOLEAN DEFAULT 0;
+ALTER TABLE items ADD COLUMN item_booked BOOLEAN DEFAULT 0;
 
 -- (page_number - 1) * items_per_page
 -- (1 - 1) * 3 = 10 1 2

@@ -1,8 +1,12 @@
 from bottle import default_app, run, request, hook
 import routes.items
-import routes.auth
+import routes.login
+import routes.logout
 import routes.static
-import routes.pages
+import routes.index
+import routes.profile
+import routes.update_profile
+import routes.rooms
 import utils.validation as valid
 
 

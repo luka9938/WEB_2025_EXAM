@@ -2,7 +2,6 @@ from bottle import get, template
 import utils.db as db_utils
 import utils.validation as validation
 import json
-from icecream import ic
 import x
 
 @get("/items/page/<page_number>")
@@ -13,7 +12,6 @@ def _(page_number):
         offset = (int(page_number) - 1) * x.ITEMS_PER_PAGE
         q = db.execute("SELECT * FROM items ORDER BY item_created_at LIMIT ? OFFSET ?", (x.ITEMS_PER_PAGE, offset))
         items = q.fetchall()
-        ic(items)
 
         is_logged = False
         try:
@@ -31,7 +29,6 @@ def _(page_number):
         <template mix-function="test">{json.dumps(items)}</template>
         """
     except Exception as ex:
-        ic(ex)
         return "ups..."
     finally:
         if "db" in locals(): db.close()

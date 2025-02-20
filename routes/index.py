@@ -1,5 +1,4 @@
 from bottle import get, template, request
-import utils.validation as utils_valid
 import utils.db as db_utils
 import credentials
 import x
@@ -15,3 +14,6 @@ def _():
         return template("index.html", items=items, mapbox_token=credentials.mapbox_token, **request.header_context)
     except Exception as ex:
         return str(ex)
+    finally:
+        if "db" in locals(): db.close()
+

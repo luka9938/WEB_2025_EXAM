@@ -1,48 +1,49 @@
-from bottle import response, request, get, template
-import utils.validation as utils_valid
+from bottle import get, request, response, template
 import utils.db as db_utils
-import sqlite3
-
-sessions = {}
+import x
 @get("/profile")
 def profile():
     try:
+        # Retrieve session ID from cookie
         user_session_id = request.get_cookie("user_session_id")
         if not user_session_id:
+            print("No session ID found. Redirecting to login.")
+            response.status = 303
+            response.set_header('Location', '/login')
+            return
+        
+        # Restore session from cookies if missing
+        user_pk = request.get_cookie("user_pk", secret=x.COOKIE_SECRET)
+        user_email = request.get_cookie("user_email", secret=x.COOKIE_SECRET)
+        user_role = request.get_cookie("user_role", secret=x.COOKIE_SECRET)
+
+        if not user_pk or not user_email or not user_role:
+            print("Incomplete session data in cookies. Redirecting to login.")
             response.status = 303
             response.set_header('Location', '/login')
             return
 
-        if user_session_id not in sessions:
-            response.status = 303
-            response.set_header('Location', '/login')
-            return
-
-        user = sessions[user_session_id]
-        is_logged = utils_valid.validate_user_logged()
-
-        db = db_utils.db()
-        cursor = db.cursor()
-        cursor.execute("SELECT * FROM users WHERE user_id = ?", (user['user_id'],))
-        user_data = cursor.fetchone()
-        db.close()
-
-        if not user_data:
-            return "User not found"
-
-        user_data = {
-            'user_id': user_data[0],
-            'username': user_data[1],
-            'user_email': user_data[2],
-            'user_password': user_data[3]
+        # Rebuild session from cookies
+        user = {
+            "user_pk": user_pk,
+            "user_email": user_email,
+            "user_role": user_role
         }
 
-        success_message = request.get_cookie("success_message")
-        response.delete_cookie("success_message", path='/')
+        # Fetch user data from database
+        with db_utils.db() as db:
+            cursor = db.cursor()
+            cursor.execute("SELECT user_pk, user_name, user_email FROM users WHERE user_pk = ?", (user["user_pk"],))
+            user_data = cursor.fetchone()
 
-        return template("profile.html", user=user_data, is_logged=is_logged, success_message=success_message)
+        success_message = request.get_cookie("success_message", default=None)
+        if success_message:
+            response.delete_cookie("success_message", path='/')
+
+        return template("profile.html", user=user_data, success_message=success_message, **request.header_context)
+
     except Exception as ex:
-        print("An error occurred:", ex)
-        return {"error": str(ex)}
+        print("An error occurred in profile:", ex)
+
     finally:
         if "db" in locals(): db.close()
