@@ -7,6 +7,7 @@ import routes.index
 import routes.profile
 import routes.update_profile
 import routes.rooms
+import routes.users
 import utils.validation as valid
 
 

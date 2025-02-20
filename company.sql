@@ -87,7 +87,7 @@ SELECT * FROM items
 ORDER BY item_created_at
 LIMIT 3 OFFSET 9;
 
-
+PRAGMA table_info(users);
 
 
 
