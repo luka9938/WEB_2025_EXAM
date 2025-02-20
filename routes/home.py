@@ -1,6 +1,7 @@
-from bottle import get, template, response
+from bottle import get, template, response, request
 import x
 import credentials
+import utils.validation as valid
 from icecream import ic
 
 @get("/")
@@ -11,14 +12,15 @@ def home():
         items = q.fetchall()
         db.close()
         ic(items)
-
-        is_logged = False
         try:
-            is_logged = x.validate_user()
+            is_customer = valid.validate_role("customer")
+            is_partner = valid.validate_role("partner")
+            is_admin = valid.validate_role("admin")
+
         except:
             pass
 
-        return template("index.html", items=items, mapbox_token=credentials.mapbox_token, is_logged=is_logged)
+        return template("index.html", items=items, mapbox_token=credentials.mapbox_token, is_admin_role=is_admin, is_partner_role=is_partner, is_customer_role=is_customer, **request.header_context)
     except Exception as ex:
         ic(ex)
         return str(ex)

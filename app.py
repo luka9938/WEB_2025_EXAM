@@ -1,10 +1,26 @@
-from bottle import default_app, run
+from bottle import default_app, run, request, hook
 import routes.items
 import routes.auth
 import routes.static
 import routes.pages
+import utils.validation as valid
+
 
 application = default_app()
+
+
+# Function to build the header context
+def build_header_context():
+    return {
+        "is_role": valid.validate_role("partner"),
+        "is_admin_role": valid.validate_role("admin"),
+        "is_logged": bool(request.get_cookie("user_session_id")),  # True if session exists
+    }
+
+# Hook to make `header_context` available globally
+@hook('before_request')
+def add_header_context():
+    request.header_context = build_header_context()
 
 try:
     import production

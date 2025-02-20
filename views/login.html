@@ -1,8 +1,33 @@
+%include("_header") 
 %import x
-%include("_header")
 
 <main class="flex h-full items-center justify-center">
-    %include("__frm_login")
+  <form
+    action="/login"
+    method="post"
+    class="flex flex-col gap-2 w-full mx-4 md:w-1/2"
+  >
+    <input
+      name="user_email"
+      class="w-full border"
+      type="email"
+      placeholder="email"
+      required
+    />
+    <input
+      name="user_password"
+      class="w-full border"
+      type="password"
+      placeholder="password"
+      minlength="6"
+      required
+    />
+    <button type="submit">Login</button>
+    <a href="/signup">Don't have an account? signup here!</a>
+    % if error_message:
+    <p class="error-message" style="color: red">{{error_message}}</p>
+    % end
+  </form>
 </main>
 
 %include("_footer")
