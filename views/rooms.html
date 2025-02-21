@@ -53,13 +53,13 @@
             <p class="pb-6 font-light text-lg">Closes May 16, 8:59 AM</p>
             % if get("is_admin_role", True):
             <form class ="mt-4" action="/block_item/<key>" method="post">
-                <input type="hidden" name="item_id" value="{{ item['item_pk'] }}">
+                <input type="hidden" name="item_pk" value="{{ item['item_pk'] }}">
                 <button type="submit">{{ 'unblock' if item['item_blocked'] else 'block' }}</button> 
             </form>
             % end
             % if get("is_customer_role", True):
-            <form class ="mt-4" action="/toggle_booking" method="post">
-                <input type="hidden" name="item_id" value="{{ item['item_pk'] }}">
+            <form class ="mt-4" action="/toggle_booking<key>" method="post">
+                <input type="hidden" name="item_pk" value="{{ item['item_pk'] }}">
                 <button type="submit">{{ 'Unbook' if item.get('item_booked') else 'Book' }}</button>
             </form>
             % else:

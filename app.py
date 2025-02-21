@@ -12,6 +12,8 @@ import routes.add_item
 import routes.reset_password
 import routes.signup
 import routes.partner_properties
+import routes.block_item
+import routes.toggle_booking
 import utils.validation as valid
 
 

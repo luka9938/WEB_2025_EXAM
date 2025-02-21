@@ -62,6 +62,7 @@ INSERT INTO items VALUES
 
 ALTER TABLE items ADD COLUMN item_blocked BOOLEAN DEFAULT 0;
 ALTER TABLE items ADD COLUMN item_booked BOOLEAN DEFAULT 0;
+ALTER TABLE items ADD COLUMN item_email TEXT DEFAULT "none";
 
 -- (page_number - 1) * items_per_page
 -- (1 - 1) * 3 = 10 1 2
