@@ -1,0 +1,64 @@
+%include("_header")
+
+<div class="flex items-center justify-center h-screen">
+  <div class="m-4 w-1/2 mx-auto">
+    <h1>Signup partner form</h1>
+    <!-- todo: needs backend validation -->
+    <form action="/signup" method="post">
+      <div>
+        <label>Name:</label>
+        <input
+          type="text"
+          name="user_name"
+          pattern="[a-zA-Z\s'\-]+"
+          required
+          title="Name should only contain letters, apostrophes, dashes, and spaces."
+        />
+      </div>
+      <div>
+        <label for="email">Email:</label>
+        <input
+          type="email"
+          name="user_email"
+          pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+          required
+          title="Please enter a valid email address."
+        />
+      </div>
+      <div>
+        <label>Password:</label>
+        <input
+          type="password"
+          name="user_password"
+          required
+          pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}"
+          title="Password must contain at least one number, one uppercase and lowercase letter, and at least 8 or more characters"
+        />
+      </div>
+      <div>
+        <label>Confirm Password:</label>
+        <input
+          type="password"
+          required
+          pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}"
+          title="Password must contain at least one number, one uppercase and lowercase letter, and at least 8 or more characters"
+        />
+      </div>
+      <label>
+        Are you a customer?:
+        <input type="radio" name="option" value="customer" /> </label
+      ><br />
+      <label>
+        Are you a partner?:
+        <input type="radio" name="option" value="partner" /> </label
+      ><br />
+      <div>
+        <!-- submit might break it, we will see... -->
+        <button type="submit">Signup</button>
+      </div>
+      <a href="/login">Already have an account? Login here!</a>
+    </form>
+  </div>
+</div>
+
+%include("_footer")

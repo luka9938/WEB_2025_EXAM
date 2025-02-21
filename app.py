@@ -8,6 +8,10 @@ import routes.profile
 import routes.update_profile
 import routes.rooms
 import routes.users
+import routes.add_item
+import routes.reset_password
+import routes.signup
+import routes.partner_properties
 import utils.validation as valid
 
 

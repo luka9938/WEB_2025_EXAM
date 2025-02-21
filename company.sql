@@ -3,10 +3,8 @@
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE users(
-    user_pk                 TEXT,
-    user_username           TEXT,
+    user_pk                 INTEGER PRIMARY KEY AUTOINCREMENT,
     user_name               TEXT,
-    user_last_name          TEXT,
     user_email              TEXT UNIQUE,
     user_password           TEXT,
     user_role               TEXT,
@@ -15,14 +13,12 @@ CREATE TABLE users(
     user_is_verified        INTEGER,
     user_is_blocked         INTEGER,
     user_is_deleted         INTEGER,
-    PRIMARY KEY(user_pk)
-) WITHOUT ROWID;
+    user_verification_code  TEXT
+);
 
 INSERT INTO users VALUES(
-    "d11854217ecc42b2bb17367fe33dc8f4",
-    "johndoe",
+    "69",
     "Jhon",
-    "Doe",
     "admin@company.com",
     "$2b$12$V/cXqWN/M2vTnYUcXMB9oODcNBX/QorJekmaDkq1Z7aeD3I5ZAjfu",
     "admin",
@@ -30,7 +26,8 @@ INSERT INTO users VALUES(
     0,
     1,
     0,
-    0
+    0,
+    "cz0P8n"
 );
 
 
@@ -83,7 +80,7 @@ LIMIT 9,3;
 -- page 2 = 4 5 6
 -- page 3 = 7 8 9
 -- page 4 = 10
-SELECT * FROM items 
+SELECT * FROM users
 ORDER BY item_created_at
 LIMIT 3 OFFSET 9;
 
