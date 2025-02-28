@@ -1,38 +1,43 @@
-from bottle import post, request, template
+from bottle import post, request, response, template
 import utils.db as db_utils
+import icecream as ic
+import x
 import sqlite3
 
-@post("/toggle_booking")
-def toggle_booking():
+@post("/toggle_booking/<key>")
+def block_item(key):
     try:
-        item_pk = request.forms.get("item_pk")
-        if not item_pk:
-            return "Item ID not provided"
-
-        # Connect to the database and set row factory for dict-like access
         with db_utils.db() as db:
             db.row_factory = sqlite3.Row
             cursor = db.cursor()
-            # Fetch the current booking status of the item
-            cursor.execute("SELECT * FROM items WHERE item_pk = ?", (item_pk,))
-            item = cursor.fetchone()
-            if not item:
+            cursor.execute("SELECT item_booked FROM items WHERE item_pk = ?", (key,))
+            row = cursor.fetchone()
+            if not row:
                 return "Item not found"
+            current_booked = row["item_booked"]
             
-            # Toggle the booking status
-            current_booking_status = bool(item["is_booked"])
-            new_booking_status = 0 if current_booking_status else 1
+            # Toggle the booked value: if booked (1) then unblock (0), otherwise block (1)
+            new_booked = 0 if current_booked else 1
             
-            # Update the booking status
-            cursor.execute("UPDATE items SET is_booked = ? WHERE item_pk = ?", (new_booking_status, item_pk))
+            # Update the item with the new booked status
+            cursor.execute("UPDATE items SET item_booked = ? WHERE item_pk = ?", (new_booked, key))
             db.commit()
             
-            # Fetch the updated item
-            cursor.execute("SELECT * FROM items WHERE item_pk = ?", (item_pk,))
+            # Retrieve the updated item
+            cursor.execute("SELECT * FROM items WHERE item_pk = ?", (key,))
             updated_item = cursor.fetchone()
+            
+            # Extract the item's email
+            
+            # Send email based on the item's booked status if email exists
         
-        # Pass the updated item (converted to a dict) to the template.
-        return template("rooms", id=item_pk, title=f"Item {item_pk}", item=dict(updated_item), **request.header_context)
+        response.status = 303
+        response.set_header('Location', f'/rooms/{key}')
+        return
+
     except Exception as ex:
-        print("An error occurred:", ex)
-        return str(ex)
+        ic(ex)
+        return "An error occurred"
+    finally:
+        if "db" in locals(): db.close()
+
