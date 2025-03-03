@@ -31,7 +31,7 @@ def login_post():
             print("No user found with email:", user_email)
             return template("login.html", error_message="Incorrect email or password", **request.header_context)
         
-        if not bool(user["user_is_verified"]):
+        if not bool(user["user_verified"]):
             print("User not verified:", user_email)
             return template("login.html", error_message="Only verified users can login", **request.header_context)
 

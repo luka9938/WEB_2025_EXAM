@@ -6,42 +6,16 @@ import sqlite3
 @get("/users")
 def users():
     try:
-        # Retrieve session ID from cookie
-        user_session_id = request.get_cookie("user_session_id")
-        if not user_session_id:
-            print("No session ID found. Redirecting to login.")
-            response.status = 303
-            response.set_header('Location', '/login')
-            return
-
-        # Restore session from cookies
-        user_pk = request.get_cookie("user_pk", secret=x.COOKIE_SECRET)
-        user_email = request.get_cookie("user_email", secret=x.COOKIE_SECRET)
-        user_role = request.get_cookie("user_role", secret=x.COOKIE_SECRET)
-
-        if not user_pk or not user_email or not user_role:
-            print("Incomplete session data in cookies. Redirecting to login.")
-            response.status = 303
-            response.set_header('Location', '/login')
-            return
-        
-        # Ensure the user is an admin
-        if user_role != "admin":
-            print("Unauthorized access attempt by:", user_email)
-            response.status = 403  # Forbidden
-            return "Access denied. Admins only."
-
-        # Connect to the database
         with db_utils.db() as db:
-            db.row_factory = sqlite3.Row  # Enables dictionary-like row access
+            db.row_factory = sqlite3.Row
             cursor = db.cursor()
 
             # Fetch active users (not blocked)
-            cursor.execute("SELECT user_pk, user_name, user_email FROM users WHERE user_is_blocked = 0")
+            cursor.execute("SELECT user_pk, user_name, user_email FROM users WHERE user_blocked = false")
             active_users = cursor.fetchall()
 
             # Fetch blocked users
-            cursor.execute("SELECT user_pk, user_name, user_email FROM users WHERE user_is_blocked = 1")
+            cursor.execute("SELECT user_pk, user_name, user_email FROM users WHERE user_blocked = true")
             blocked_users = cursor.fetchall()
 
         # Convert results to dictionaries (prevents tuple-related errors)

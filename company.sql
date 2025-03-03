@@ -10,9 +10,9 @@ CREATE TABLE users(
     user_role               TEXT,
     user_created_at         INTEGER,
     user_updated_at         INTEGER,
-    user_is_verified        INTEGER,
-    user_is_blocked         INTEGER,
-    user_is_deleted         INTEGER,
+    user_verified           BOOLEAN,
+    user_blocked            BOOLEAN,
+    user_deleted            BOOLEAN,
     user_verification_code  TEXT
 );
 

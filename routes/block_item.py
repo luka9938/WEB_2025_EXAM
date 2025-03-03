@@ -1,7 +1,6 @@
-from bottle import post, request, response, template
+from bottle import post, response
 import utils.db as db_utils
 import icecream as ic
-import x
 import sqlite3
 
 @post("/block_item/<key>")

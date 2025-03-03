@@ -42,18 +42,18 @@ def signup():
             "user_password": hashed_password.decode('utf-8'), 
             "user_role": selected_option, 
             "user_verification_code": verification_code,
-            "user_is_blocked": False,
-            "user_is_verified": True,
-            "user_is_deleted": False
+            "user_blocked": False,
+            "user_verified": True,
+            "user_deleted": False
         }
         
         with utils.db.db() as conn:
             cursor = conn.cursor()
             cursor.execute("""
-                INSERT INTO users (user_name, user_email, user_password, user_role, user_verification_code, user_is_blocked, user_is_verified, user_is_deleted) 
+                INSERT INTO users (user_name, user_email, user_password, user_role, user_verification_code, user_blocked, user_verified, user_deleted) 
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             """, (user["user_name"], user["user_email"], user["user_password"], user["user_role"], 
-                  user["user_verification_code"], user["user_is_blocked"],user["user_is_verified"], user["user_is_deleted"]))
+                  user["user_verification_code"], user["user_blocked"],user["user_verified"], user["user_deleted"]))
             conn.commit()
 
         response.status = 303

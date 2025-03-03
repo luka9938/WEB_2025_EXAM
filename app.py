@@ -13,6 +13,7 @@ import routes.reset_password
 import routes.signup
 import routes.partner_properties
 import routes.block_item
+import routes.block_user
 import routes.toggle_booking
 import utils.validation as valid
 
