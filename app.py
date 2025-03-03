@@ -26,7 +26,7 @@ def build_header_context():
     return {
         "is_role": valid.validate_role("partner"),
         "is_admin_role": valid.validate_role("admin"),
-        "is_logged": bool(request.get_cookie("user_session_id")),  # True if session exists
+        "is_logged": bool(request.get_cookie("user_session_id")),
     }
 
 # Hook to make `header_context` available globally
