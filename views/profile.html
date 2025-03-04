@@ -34,6 +34,9 @@
       required
     />
     <button type="submit">Save Changes</button>
+    % if error_message:
+    <p class="error-message" style="color: red">{{error_message}}</p>
+    % end
   </form>
 
   <h1 class="mt-8">To delete your account enter your email and password</h1>

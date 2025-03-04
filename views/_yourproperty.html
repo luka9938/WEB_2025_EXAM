@@ -27,9 +27,6 @@
         <form action="/delete_item/{{ item['item_pk'] }}" method="post">
             <input type="hidden" name="item_pk" value="{{ item['item_pk'] }}">
             <button type="submit">Delete</button>
-            % if error_message:
-            <p class="error-message" style="color: red">{{error_message}}</p>
-            % end
         </form>
     </div>
 </div>

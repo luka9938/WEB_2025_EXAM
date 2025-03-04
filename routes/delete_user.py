@@ -27,12 +27,11 @@ def login_post():
             print("Password check failed for user:", user_email)
             return template("login.html", error_message="Your password is wrong", **request.header_context)
 
-        # Delete the item from SQLite
         cursor.execute("DELETE FROM users WHERE user_email = ?", (user_email,))
+        cursor.execute("DELETE FROM items WHERE item_email = ?", (user_email,))
         conn.commit()
         conn.close()
 
-        # Redirect to the partner properties page
         response.status = 303
         response.set_header('Location', '/')
         return
