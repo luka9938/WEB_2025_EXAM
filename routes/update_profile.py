@@ -1,31 +1,19 @@
 from bottle import put, request, response
 import utils.db as db_utils
 import bcrypt
-import x  # Make sure you have x.COOKIE_SECRET set for cookie secrets
+import x
+import icecream as ic
 
 sessions = {}
 
 @put("/update_profile")
 def update_profile():
     try:
-        # Retrieve session ID from cookie
-        user_session_id = request.get_cookie("user_session_id")
-        if not user_session_id:
-            print("No session ID found. Redirecting to login.")
-            response.status = 303
-            response.set_header('Location', '/login')
-            return
         
         # Restore session from cookies if missing
         user_pk = request.get_cookie("user_pk", secret=x.COOKIE_SECRET)
         user_email = request.get_cookie("user_email", secret=x.COOKIE_SECRET)
         user_role = request.get_cookie("user_role", secret=x.COOKIE_SECRET)
-
-        if not user_pk or not user_email or not user_role:
-            print("Incomplete session data in cookies. Redirecting to login.")
-            response.status = 303
-            response.set_header('Location', '/login')
-            return
 
         # Rebuild session from cookies
         user = {
@@ -60,9 +48,6 @@ def update_profile():
             """, (user_name, user_email, hashed_password, user["user_pk"]))
             conn.commit()
 
-        # Update session with the latest data
-        sessions[user_session_id] = user
-
         # Set success message cookie
         response.set_cookie("success_message", "Profile updated successfully", path='/')
 
@@ -72,6 +57,6 @@ def update_profile():
         return
 
     except Exception as ex:
-        print("An error occurred:", ex)
+        ic(ex)
         return f"An error occurred: {ex}"
 

@@ -19,6 +19,7 @@ import routes.edit_item
 import routes.delete_item
 import routes.forgot_password
 import routes.reset_password
+import routes.delete_user
 import utils.validation as valid
 
 

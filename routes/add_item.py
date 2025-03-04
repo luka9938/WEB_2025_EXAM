@@ -5,7 +5,7 @@ import os
 import time
 from utils.random_string import generate_random_string
 import x
-UPLOAD_DIR = "images/uploads"
+UPLOAD_DIR = "images/"
 
 @get("/add_item")
 def add_item_form():

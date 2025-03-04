@@ -1,7 +1,7 @@
 <div class="item">
     <a href="/rooms/{{ item['item_pk'] }}">
         <div class="flex flex-col justify-between mt-2">
-            <img src="/images/uploads/{{ item['item_splash_image'] }}" 
+            <img src="/images/{{ item['item_splash_image'] }}" 
     class="w-full h-48 aspect-square object-cover rounded-lg">
             <span>
                 {{ item["item_name"] }}
@@ -27,6 +27,9 @@
         <form action="/delete_item/{{ item['item_pk'] }}" method="post">
             <input type="hidden" name="item_pk" value="{{ item['item_pk'] }}">
             <button type="submit">Delete</button>
+            % if error_message:
+            <p class="error-message" style="color: red">{{error_message}}</p>
+            % end
         </form>
     </div>
 </div>

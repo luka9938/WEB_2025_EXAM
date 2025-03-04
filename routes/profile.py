@@ -40,7 +40,7 @@ def profile():
         if success_message:
             response.delete_cookie("success_message", path='/')
 
-        return template("profile.html", user=user_data, success_message=success_message, **request.header_context)
+        return template("profile.html", user=user_data, success_message=success_message, error_message=None, **request.header_context)
 
     except Exception as ex:
         print("An error occurred in profile:", ex)

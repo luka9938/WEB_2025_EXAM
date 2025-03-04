@@ -2,7 +2,7 @@ from bottle import get, put, template, response, request
 import utils.db as db_utils
 from utils.random_string import generate_random_string
 import os
-UPLOAD_DIR = "images/uploads"
+UPLOAD_DIR = "images/"
 
 @get('/edit_item/<key>')
 def edit_item_form(key):
