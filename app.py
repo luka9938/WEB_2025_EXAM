@@ -31,6 +31,7 @@ def build_header_context():
     return {
         "is_role": valid.validate_role("partner"),
         "is_admin_role": valid.validate_role("admin"),
+        "is_customer_role": valid.validate_role("customer"),
         "is_logged": bool(request.get_cookie("user_session_id")),
     }
 
