@@ -1,7 +1,8 @@
-from bottle import get, template, response, request
+from bottle import get, put, template, response, request
 import utils.db as db_utils
 import sqlite3
 import icecream as ic
+import bcrypt
 
 @get("/reset-password/<key>")
 def reset_password(key):
@@ -27,3 +28,26 @@ def reset_password(key):
         return str(ex)
     finally:
         if "db" in locals(): db.close()
+
+@put("/reset-password/<key>")
+def handle_reset_password(key):
+    try:
+        password = request.forms.get("password")
+        confirm_password = request.forms.get("confirm_password")
+
+        if password != confirm_password:
+            return "Passwords do not match"
+        
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+
+        # Update user's password in SQLite database
+        update_query = "UPDATE users SET user_password = ? WHERE user_pk = ?"
+        db_utils.db.execute(update_query, (hashed_password, key))
+        db_utils.db.commit()
+
+        return "Password reset successfully"
+    except Exception as ex:
+        ic(ex)
+        return str(ex)
+    finally:
+        if "db" in locals(): db_utils.db.close()

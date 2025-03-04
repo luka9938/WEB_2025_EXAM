@@ -3,8 +3,7 @@ import utils.db as db_utils
 import utils.validation as valid
 import bcrypt
 import uuid
-import json
-import x  # Ensure you have x.COOKIE_SECRET
+import x
 import sqlite3
 
 sessions = {}
@@ -41,7 +40,7 @@ def login_post():
             return template("login.html", error_message="Your password is wrong", **request.header_context)
 
         user_session_id = str(uuid.uuid4())
-        sessions[user_session_id] = dict(user)  # Convert to dict if needed
+        sessions[user_session_id] = dict(user)
 
         cookie_secret = x.COOKIE_SECRET
         print("Setting cookies:")

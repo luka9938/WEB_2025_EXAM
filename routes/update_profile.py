@@ -1,11 +1,11 @@
-from bottle import post, request, response
+from bottle import put, request, response
 import utils.db as db_utils
 import bcrypt
 import x  # Make sure you have x.COOKIE_SECRET set for cookie secrets
 
 sessions = {}
 
-@post("/update_profile")
+@put("/update_profile")
 def update_profile():
     try:
         # Retrieve session ID from cookie

@@ -47,12 +47,12 @@ def add_item():
         item_splash_image.save(splash_image_path)
 
         # Process additional images
-        image2 = request.files.get("image2")
+        image2 = request.files.get("item_image2")
         image2_filename = f"{generate_random_string()}_{image2.filename}"
         image2_path = os.path.join(UPLOAD_DIR, image2_filename)
         image2.save(image2_path)
         
-        image3 = request.files.get("image3")
+        image3 = request.files.get("item_image3")
         image3_filename = f"{generate_random_string()}_{image3.filename}"
         image3_path = os.path.join(UPLOAD_DIR, image3_filename)
         image3.save(image3_path)

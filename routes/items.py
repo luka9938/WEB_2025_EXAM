@@ -1,6 +1,5 @@
-from bottle import get, template
+from bottle import get, template, request
 import utils.db as db_utils
-import utils.validation as validation
 import json
 import x
 
@@ -13,14 +12,7 @@ def _(page_number):
         q = db.execute("SELECT * FROM items ORDER BY item_created_at LIMIT ? OFFSET ?", (x.ITEMS_PER_PAGE, offset))
         items = q.fetchall()
 
-        is_logged = False
-        try:
-            validation.validate_user_logged()
-            is_logged = True
-        except:
-            pass
-
-        html = "".join([template("_item", item=item, is_logged=is_logged) for item in items])
+        html = "".join([template("_item", item=item, **request.header_context) for item in items])
         btn_more = template("__btn_more", page_number=next_page) if len(items) >= x.ITEMS_PER_PAGE else ""
 
         return f"""
