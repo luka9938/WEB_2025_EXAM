@@ -17,6 +17,8 @@ import routes.block_user
 import routes.toggle_booking
 import routes.edit_item
 import routes.delete_item
+import routes.forgot_password
+import routes.reset_password
 import utils.validation as valid
 
 

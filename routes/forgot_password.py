@@ -5,17 +5,18 @@ import icecream as ic
 
 @get("/forgot-password")
 def forgot_password():
-    return template("forgot-password.html")
+    return template("forgot-password.html", **request.header_context)
 
 ##############################
 @post("/forgot-password")
 def handle_forgot_password():
     try:
-        email = request.forms.get("email")
-
+        email = request.forms.get("user_email")
+        db_conn = db_utils.db()
+        cursor = db_conn.cursor()
         # Query user from SQLite database
         user_query = "SELECT * FROM users WHERE user_email = ?"
-        result = db_utils.db.execute(user_query, (email,))
+        result = cursor.execute(user_query, (email,))
         user = result.fetchone()
 
         if not user:
