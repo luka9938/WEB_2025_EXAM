@@ -1,4 +1,4 @@
-from bottle import get, put, template, response, request
+from bottle import get, post, template, response, request
 import utils.db as db_utils
 from utils.random_string import generate_random_string
 import os
@@ -26,7 +26,7 @@ def edit_item_form(key):
     finally:
         if "db" in locals(): db_utils.db.close()
 
-@put('/edit_item/<key>')
+@post('/edit_item/<key>')
 def update_item(key):
     try:
         item_name = request.forms.get('item_name')
