@@ -1,4 +1,4 @@
-from bottle import put, request, response
+from bottle import post, request, response
 import utils.db as db_utils
 import bcrypt
 import x
@@ -6,7 +6,7 @@ import icecream as ic
 
 sessions = {}
 
-@put("/update_profile")
+@post("/update_profile")
 def update_profile():
     try:
         
@@ -37,16 +37,15 @@ def update_profile():
         user["user_name"] = user_name
         user["user_email"] = user_email
         user["user_password"] = hashed_password
-
-        # Update the database
-        with db_utils.db() as conn:
-            cursor = conn.cursor()
-            cursor.execute("""
-                UPDATE users 
-                SET user_name = ?, user_email = ?, user_password = ?
-                WHERE user_pk = ?
-            """, (user_name, user_email, hashed_password, user["user_pk"]))
-            conn.commit()
+        
+        db_conn = db_utils.db()
+        cursor = db_conn.cursor()
+        cursor.execute("""
+            UPDATE users 
+            SET user_name = ?, user_email = ?, user_password = ?
+            WHERE user_pk = ?
+        """, (user_name, user_email, hashed_password, user["user_pk"]))
+        db_conn.commit()
 
         # Set success message cookie
         response.set_cookie("success_message", "Profile updated successfully", path='/')
